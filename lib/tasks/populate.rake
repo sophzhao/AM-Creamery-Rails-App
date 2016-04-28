@@ -165,8 +165,8 @@ namespace :db do
 
     # Step 7a: Add 4 of the 6 flavors to each store
     Store.all.each do |store|
-      store_flavors = StoreFlavor.all.to_a.sample(4)
-      store_flavors.each do |flavor|
+        store_flavors = Flavor.all.to_a.sample(4)      
+        store_flavors.each do |flavor|
         store_flavor = StoreFlavor.new
         store_flavor.flavor_id = flavor.id
         store_flavor.store_id = store.id

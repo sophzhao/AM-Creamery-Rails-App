@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   # get modules to help with some functionality
   include CreameryHelpers::Validations
+  has_secure_password
 
   # Relationships
   belongs_to :employee
@@ -13,6 +14,10 @@ class User < ActiveRecord::Base
   private
   def employee_is_active_in_system
     is_active_in_system(:employee)
+  end
+
+  def self.authenticate(email,password)
+    find_by_email(email).try(:authenticate, password)
   end
 
 end
