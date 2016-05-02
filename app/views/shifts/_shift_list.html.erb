@@ -1,0 +1,35 @@
+<% if shifts.empty? %>
+  <p><em>There are no <%= state%> shifts at this time.</em></p>
+<% else %>
+  <h3><%= state.capitalize %> Shifts</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Store</th>
+        <th>Employee</th>
+        <th class="centered">Start Time</th>
+        <th class="centered">End Time</th>
+        <th>Notes</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% shifts.each do |shift| %>
+        <tr>
+          <td><%= link_to shift.assignment.store.name, store_path(shift.assignment.store) %></td>
+          <td><%= link_to shift.assignment.employee.name, employee_path(shift.assignment.employee) %></td>
+          <td class="centered"><%= shift.start_time %></td>
+          <td class="centered"><%= shift.end_time%></td>
+          <td><%= shift.notes %></td>
+          <td>
+            <%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
+              &nbsp;Edit&nbsp;
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate shifts, previous_label: "Previous&nbsp;", next_label: "&nbsp;Next" %>  
+<% end %>
+<p>&nbsp;</p>

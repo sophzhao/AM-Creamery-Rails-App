@@ -6,13 +6,15 @@
     <tr valign="top">
         <td>
             <h3>Personal Information</h3>
-            <div id="employee_details">
-            
+            <div id="user_employee_details">
+                <%= render :partial => 'users/user_details'%>
             </div>
         </td>
         <td width="50">&nbsp;</td>
         <td>
-            <h3>Beginning Shifts</h3>
+            <h3>Upcoming Shifts</h3>
+            <div id="upcoming_shifts">
+                <%= render :partial => 'users/user_details'%>
         </td>
     </tr>
 </table>

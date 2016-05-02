@@ -1,0 +1,21 @@
+<p>
+<!--   <h4>Name: <%= link_to employees_path %><%= @current_user.employee.proper_name %></h4> -->
+<h4><span id="user_title"><%= link_to @current_user.employee.proper_name, 
+    employee_path(current_user.employee)%></span></h4>
+</p>
+<!-- no sssn -->
+<p>
+  <img src="/app/assets/images/mail.png" alt="email"> <%= @current_user.email%>
+</p>
+<p>
+  <b>Phone</b> <%= @current_user.employee.phone.nil? ? (number_to_phone @current_user.employee.phone) : "None entered" %>
+</p>
+
+<p>
+  <b>Role:</b> <%= @current_user.employee.role.capitalize %>
+</p>
+
+<p>
+  <b>Active:</b> <%= @current_user.employee.active ? "Yes" : "No" %>
+</p>
+

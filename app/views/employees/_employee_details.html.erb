@@ -10,11 +10,11 @@
 </p>
  -->
 <p>
-  <b>Date of Birth:</b> <%= @employee.date_of_birth.strftime("%m/%d/%y") %>
+  <b>Date of Birth:</b> <%= @current_user.employee.date_of_birth.strftime("%B %d, %Y") %>
 </p>
 
 <p>
-  <b>Phone:</b> <%= number_to_phone @employee.phone unless @employee.phone.nil? %>
+  <b>Phone:</b> <%= @current_user.employee.phone.nil? ? (number_to_phone @current_user.employee.phone) : "None entered" %>
 </p>
 
 <p>
