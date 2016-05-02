@@ -1,5 +1,6 @@
 class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
+  authorize resource
   
   def index
     @active_stores = Store.active.alphabetical.paginate(page: params[:page]).per_page(10)
@@ -7,22 +8,18 @@ class StoresController < ApplicationController
   end
 
   def show
-    authorize! :read, @store
     @current_assignments = @store.assignments.current.by_employee.paginate(page: params[:page]).per_page(8)
   end
 
   def new
     @store = Store.new
-    authorize! :new, @store
   end
 
   def edit
-    authorize! :update, @store
   end
 
   def create
     @store = Store.new(store_params)
-    authorize! :create, @store
     if @store.save
       redirect_to store_path(@store), notice: "Successfully created #{@store.name}."
     else
@@ -31,7 +28,6 @@ class StoresController < ApplicationController
   end
 
   def update
-    authorize! :update, @store
     if @store.update(store_params)
       redirect_to store_path(@store), notice: "Successfully updated #{@store.name}."
     else

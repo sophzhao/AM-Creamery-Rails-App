@@ -7,7 +7,7 @@ class Ability
 
     if user.role? :admin
       can :manage, :all
-      
+
 
     elsif user.role? :manager
       can :read, Store
@@ -78,7 +78,7 @@ class Ability
       can :read, Flavor, :active => true
 
       can :read, Employee do |this_employee|
-        this_employee.id == user.id
+        this_employee.id == user.employee_id
       end
 
       can :read, User do |u|
