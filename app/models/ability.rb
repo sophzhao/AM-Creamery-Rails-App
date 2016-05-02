@@ -1,63 +1,148 @@
 class Ability
   include CanCan::Ability
-  
+
   def initialize(user)
     # set user to new User if not logged in
     user ||= User.new # i.e., a guest user
-    
-    # set authorizations for different user roles
+
     if user.role? :admin
-      # they get to do it all
       can :manage, :all
       
-    elsif user.role? :member
-      # can see a list of all users
-      can :index, User
+
+    elsif user.role? :manager
+      can :read, Store
+
+      can :read, Job
+
+      can :read, Flavor
       
-      # they can read their own profile
-      can :show, User do |u|  
-        u.id == user.id
-      end
-      # they can update their own profile
-      can :update, User do |u|  
-        u.id == user.id
-      end
-      
-      # they can read their own projects' data
-      can :read, Project do |this_project|  
-        my_projects = user.projects.map(&:id)
-        my_projects.include? this_project.id 
-      end
-      # they can create new projects for themselves
-      can :create, Project
-      
-      # they can update the project only if they are the manager (creator)
-      can :update, Project do |this_project|
-        managed_projects = user.projects.map{|p| p.id if p.manager_id == user.id}
-        managed_projects.include? this_project.id
-      end
-            
-      # they can read tasks in these projects
-      can :read, Task do |this_task|  
-        project_tasks = user.projects.map{|p| p.tasks.map(&:id)}.flatten
-        project_tasks.include? this_task.id 
-      end
-      
-      # they can update tasks in these projects
-      can :update, Task do |this_task|  
-        project_tasks = user.projects.map{|p| p.tasks.map(&:id)}.flatten
-        project_tasks.include? this_task.id 
-      end
-      
-      # they can create new tasks for these projects
-      can :create, Task do |this_task|  
-        my_projects = user.projects.map(&:id)
-        my_projects.include? this_task.project_id  
+      #can read the employees at the same current store as manager
+      can :read, Employee do |this_employee|
+        my_store = user.employee.current_assignment.store_id
+        this_employee.current_assignment.store_id == my_store
       end
 
+      #can read the assignments at the same current store as manager
+      can :read, Assignment do |this_assignment|
+        my_store = user.employee.current_assignment.store_id
+        managed_assignments = Assignment.current.map{|a| a.store_id if a.store_id == my_store}
+        managed_assignments.include? this_assignment
+      end
+
+      #can read the shifts at the same current store as manager
+      can :read, Shift do |this_shift|
+        my_store = user.employee.current_assignment.store_id 
+        managed_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
+        managed_shifts.include? this_shift
+      end
+
+      can :create, Shift do |this_shift|
+        my_store = user.employee.current_assignment.store_id 
+        # user.employee.current_assignment.store_id == this_shift.assignment.store_id && user.e == this_shift.assignment.employee_id
+        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
+        the_shifts.include? this_shift        
+      end
+
+      can :update, Shift do |this_shift|
+        my_store = user.employee.current_assignment.store_id         
+        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
+        the_shifts.include? this_shift                
+      end
+
+      can :destroy, Shift do |this_shift|
+        my_store = user.employee.current_assignment.store_id         
+        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
+        the_shifts.include? this_shift 
+      end
+
+      can :create, ShiftJob do |this_shift_job| 
+        user.employee.current_assignment.store_id == this_shift_job.shift.assignment.store_id 
+      end 
+
+      can :destroy, ShiftJob do |this_shift_job| 
+        user.employee.current_assignment.store_id == this_shift_job.shift.assignment.store_id
+      end
+
+      can :create, StoreFlavor do |this_store_flavor| 
+        user.employee.current_assignment.store_id == this_store_flavor..store_id 
+      end 
+
+      can :destroy, StoreFlavor do |this_store_flavor| 
+        user.employee.current_assignment.store_id == this_store_flavor.shift.assignment.store_id
+      end
+
+
+    elsif user.role? :employee
+      can :read, Job, :active => true
+      can :read, Store, :active => true
+      can :read, Flavor, :active => true
+
+      can :read, Employee do |this_employee|
+        this_employee.id == user.id
+      end
+
+      can :read, User do |u|
+        u.id == user.id
+      end
+
+      can :read, Assignment do |a|
+        my_assignments = user.employee.assignment.map(&:id)
+        my_assignments.include? a
+      end
+
+      can :read, Shift do |s|
+        my_shifts = user.employee.assignment.shift.map(&:id)
+        my_shifts.include? s
+      end
+
+      can :read, ShiftJob do |sj|
+        my_shift_jobs = user.employee.assignment.shift.shift_job.map(&:id)
+        my_shift_jobs.include? sj
+      end
+
+      can :update, Employee do |this_employee|
+        this_employee.id == user.id
+      end
+
+      can :update, User do |u|
+        u.id == user.id
+      end
     else
-      # guests can only read domains covered (plus home pages)
-      can :read, Domain
+      can :read, Store do |s|
+        active_stores = Store.active.map(&:id)
+        active_stores.include? s
+      end
     end
   end
 end
+
+
+    # Define abilities for the passed in user here. For example:
+    #
+    #   user ||= User.new # guest user (not logged in)
+    #   if user.admin?
+    #     can :manage, :all
+    #   else
+    #     can :read, :all
+    #   end
+    #
+    # The first argument to `can` is the action you are giving the user
+    # permission to do.
+    # If you pass :manage it will apply to every action. Other common actions
+    # here are :read, :create, :update and :destroy.
+    #
+    # The second argument is the resource the user can perform the action on.
+    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
+    # class of the resource.
+    #
+    # The third argument is an optional hash of conditions to further filter the
+    # objects.
+    # For example, here the user can only update published articles.
+    #
+    #   can :update, Article, :published => true
+    #
+    # See the wiki for details:
+    # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
+
+
+

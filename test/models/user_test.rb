@@ -54,5 +54,12 @@ class UserTest < ActiveSupport::TestCase
       assert freeman_user.destroyed?
     end
 
+    # test role? method
+    should "have working role? method" do 
+      assert @ben_user.role?(:manager)
+      deny @ben_user.role?(:admin)
+      assert @alex_user.role?(:admin)
+    end
+    
   end
 end

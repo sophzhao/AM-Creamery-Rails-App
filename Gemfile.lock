@@ -144,6 +144,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
+    nested_form (0.3.2)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     quiet_assets (1.1.0)
@@ -274,6 +275,7 @@ DEPENDENCIES
   minitest-rails
   minitest-reporters
   mocha
+  nested_form
   nokogiri
   quiet_assets
   rails (= 4.2.5)
@@ -294,3 +296,6 @@ DEPENDENCIES
   web-console (~> 2.0)
   will_paginate
   wirble
+
+BUNDLED WITH
+   1.11.2

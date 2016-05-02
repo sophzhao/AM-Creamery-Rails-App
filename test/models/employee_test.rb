@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class EmployeeTest < ActiveSupport::TestCase
+  # Test that don't save the attraction to the database as a blank value
+  should accept_nested_attributes_for(:attractions).allow_destroy(true)
+
   # Test relationships
   should have_many(:assignments)
   should have_many(:stores).through(:assignments)

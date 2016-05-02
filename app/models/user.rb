@@ -10,6 +10,14 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, case_sensitive: false
   validates_format_of :email, :with => /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i, :message => "is not a valid format"
   validate :employee_is_active_in_system
+
+  ROLES = [['Administrator', :admin],['Store Manager', :manager],['Store Employee', :employee]]
+
+  # for use in authorizing with CanCan
+  def role?(authorized_role)
+    return false if self.employee.role.nil?
+    self.employee.role.downcase.to_sym == authorized_role
+  end
   
   private
   def employee_is_active_in_system
@@ -19,5 +27,4 @@ class User < ActiveRecord::Base
   def self.authenticate(email,password)
     find_by_email(email).try(:authenticate, password)
   end
-
 end

@@ -80,6 +80,12 @@ namespace :db do
         mgr.active = true
         mgr.role = "manager"
         mgr.save!
+        u = User.new
+        u.email = "#{mgr.first_name.downcase}.#{mgr.last_name.downcase}@example.com"
+        u.password = "creamery"
+        u.password_confirmation = "creamery"
+        u.employee_id = mgr.id
+        u.save!
         # Assign to store
         assign_mgr = Assignment.new
         assign_mgr.store_id = store.id

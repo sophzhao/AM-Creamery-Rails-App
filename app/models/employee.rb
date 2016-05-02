@@ -7,12 +7,14 @@ class Employee < ActiveRecord::Base
   after_rollback :terminate_employee
 
   attr_reader :destroyable
-  
+
   # Relationships
   has_many :assignments
   has_many :stores, through: :assignments
   has_one :user, dependent: :destroy
   has_many :shifts, through: :assignments
+  accepts_nested_attributes_for :user, reject_if: lambda { |user| user[:email].blank? }, allow_destroy: true
+
   
   # Validations
   validates_presence_of :first_name, :last_name, :date_of_birth, :ssn, :role
@@ -56,7 +58,7 @@ class Employee < ActiveRecord::Base
   def age
     (Time.now.to_s(:number).to_i - date_of_birth.to_time.to_s(:number).to_i)/10e9.to_i
   end
-  
+
   # Misc Constants
   ROLES_LIST = [['Employee', 'employee'],['Manager', 'manager'],['Administrator', 'admin']]
   

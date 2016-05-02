@@ -1,21 +1,36 @@
-<%= simple_form_for @employee, html: { class: 'form-horizontal' } do |f| %>
-  <fieldset>
-    <legend><%= controller.action_name.capitalize %> Employee</legend>
+<%= simple_nested_form_for @employee, :html => { :class => 'form-horizontal' } do |f| %>
+    <div class="row">
+      <div class="span7">
+        <fieldset>
+          <legend><%= controller.action_name.capitalize %>Employee</legend>
+          <%= f.input :first_name, input_html: {class: "avg"} %>
+          <%= f.input :last_name, input_html: {class: "avg"} %>
+          <%= f.input :ssn, input_html: {class: "avg"} %>
+          <%= f.input :date_of_birth, as: :date, start_year: Date.today.year - 13,
+                                    end_year: Date.today.year - 90,
+                                    order: [:month, :day, :year], include_blank: true, input_html: {class: "avg"} %>
 
-    <%= f.input :first_name, input_html: {class: "avg"} %>
-    <%= f.input :last_name, input_html: {class: "avg"} %>
-    <%= f.input :ssn, input_html: {class: "avg"} %>
-    <%= f.input :date_of_birth, as: :date, start_year: Date.today.year - 13,
-                              end_year: Date.today.year - 90,
-                              order: [:month, :day, :year], include_blank: true, input_html: {class: "avg"} %>
+          <%= f.input :phone, input_html: {class: "avg"} %>
+          <%= f.input :role, collection: Employee::ROLES_LIST, include_blank: true, input_html: {class: "avg"} %>
+          <%= f.input :active %>
+          <!-- render :partial => "employee_details", :locals => { :f => employee_form } -->
+        </fieldset>
+      </div>
 
-    <%= f.input :phone, input_html: {class: "avg"} %>
-    <%= f.input :role, collection: Employee::ROLES_LIST, include_blank: true, input_html: {class: "avg"} %>
-    <%= f.input :active %>
-
+    <div class="span5">
+      <legend>user for this employee</legend>
+        <div id="employee_user">
+          <%= f.simple_fields_for :user do |user_form| %>
+            <%= render :partial => "user_fields", :locals => { :f => user_form } %>
+          <% end %> 
+          <p>
+            <br /><%= f.link_to_add("Add user", :user, :class => 'button tiny') %>
+          </p>
+        </div> 
+      </div>
+    </div>
     <div class="form-actions">
       <%= f.submit nil, :class => 'button radius' %>
-      <%= link_to 'Cancel', employees_path, :class => 'button alert radius' %>
+      <%= link_to 'Cancel', employees_path, :class => 'button secondary' %>
     </div>
-  </fieldset>
-<% end %>
+  <% end %>

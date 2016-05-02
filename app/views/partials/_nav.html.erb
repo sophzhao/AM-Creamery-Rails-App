@@ -10,6 +10,7 @@
           <%= link_to "Stores", stores_path %>
           <ul class="dropdown">
             <li><%= link_to "Store List", stores_path %></li>
+           <% if logged_in? %>
             <li><%= link_to "Add a Store", new_store_path %></li>
           </ul>
         </li>
@@ -32,7 +33,15 @@
           </ul>
         </li>
       </ul>
-
+        <ul class="right">
+          <li class="has-dropdown">
+            <%= link_to "Settings", home_path %>
+            <ul class="dropdown">
+              <li><%= link_to "Logout", logout_path %></li>
+            </ul>
+          </li>
+        <% end %>
+      <
     </section>
   </nav>
 </div>
