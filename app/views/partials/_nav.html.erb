@@ -17,7 +17,7 @@
           </ul>
         </li>
 
-        <% if current_user!=nil && (current_user.role? :admin || :manager)%>
+        <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
         <!-- options for employees -->
         <li class="has-dropdown">
           <%= link_to "Employees", employees_path %>

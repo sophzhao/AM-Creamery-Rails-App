@@ -1,11 +1,32 @@
 <div class="row">
   <div class="small-7 columns">
     <%= render partial: "store_details" %>
-  </div>
-  <div class="small-5 columns">
     <% if current_user!=nil && (current_user.role? :admin) %>
         <%= render partial: "assigned_employees" unless @current_assignments.empty?%>
     <% end %>
+  </div>
+  <div class="small-5 columns">
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>This Week's Flavors</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @active_store_flavors.each do |store_flavor| %>
+        <tr>
+          <td><%= link_to Flavor.find(store_flavor.flavor_id).name, flavor_path(store_flavor.flavor_id) %></td>
+          <td>
+            <%= link_to(new_flavor_path(store_flavor.flavor_id), class: 'button tiny radius warning') do %>
+              &nbsp;(able to remove)&nbsp;
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= image_tag @store.create_map_link %>
   </div>
 </div>
 

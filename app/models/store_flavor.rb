@@ -8,7 +8,6 @@ class StoreFlavor < ActiveRecord::Base
   validate :store_is_active_in_system, on: :create
   validate :flavor_is_active_in_system, on: :create
 
-  scope :alphabetical ->
   scope :for_store,   ->(store_id) { where("store_id = ?", store_id) }
   scope :for_flavor,  ->(flavor_id) { where("flavor_id = ?", flavor_id) }
   private  
