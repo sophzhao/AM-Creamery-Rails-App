@@ -6,11 +6,11 @@ class EmployeesController < ApplicationController
     if current_user.role? :manager
       @active_employees = Employee.for_store(current_user.employee.current_assignment.store_id).active.alphabetical.paginate(page: params[:page]).per_page(10)
       @inactive_employees = Employee.for_store(current_user.employee.current_assignment.store_id).inactive.alphabetical.paginate(page: params[:page]).per_page(10)
-    else
+    elsif 
       @active_employees = Employee.active.alphabetical.paginate(page: params[:page]).per_page(10)
       @inactive_employees = Employee.inactive.alphabetical.paginate(page: params[:page]).per_page(10)
     end
-  end
+  end 
 
   def show
     # get the assignment history for this employee
@@ -54,7 +54,7 @@ class EmployeesController < ApplicationController
   end
 
   def employee_params
-    params.require(:employee).permit(:first_name, :last_name, :ssn, :date_of_birth, :role, :phone, :active, user_attributes: [:id, :email, :password, :_destroy])
+    params.require(:employee).permit(:first_name, :last_name, :ssn, :date_of_birth, :role, :phone, :active, user_attributes: [:id, :email, :password, :password_confirmation, :_destroy])
   end
 
 end

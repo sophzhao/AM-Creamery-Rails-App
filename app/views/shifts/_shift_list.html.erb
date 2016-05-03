@@ -1,28 +1,35 @@
 <% if shifts.empty? %>
   <p><em>There are no <%= state%> shifts at this time.</em></p>
 <% else %>
-  <h3><%= state.capitalize %> Shifts</h3>
+  <h3><%= state.capitalize %> Shifts for <%= link_to current_user.employee.current_assignment.store.name, store_path(current_user.employee.current_assignment.store) %> Store </h3>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Store</th>
         <th>Employee</th>
+        <th class="centered">Date</th>        
         <th class="centered">Start Time</th>
-        <th class="centered">End Time</th>
-        <th>Notes</th>
+        <% unless @state == "upcoming") %>        
+          <th class="centered">End Time</th>
+        <% end %>
+        <% if @state == ("incomplete" || "completed") %>
+          <th class="centered">End Time</th>          
+        <% end %>
         <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
       <% shifts.each do |shift| %>
         <tr>
-          <td><%= link_to shift.assignment.store.name, store_path(shift.assignment.store) %></td>
           <td><%= link_to shift.assignment.employee.name, employee_path(shift.assignment.employee) %></td>
-          <td class="centered"><%= shift.start_time %></td>
-          <td class="centered"><%= shift.end_time%></td>
-          <td><%= shift.notes %></td>
-          <td>
-            <%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
+          <td class="centered"><%= shift.start_time.strftime("%b %d") %></td>
+          <td class="centered"><%= shift.start_time.strftime("%I:%M %p") %></td>
+          <% unless @state == "upcoming") %>        
+            <td class="centered"><%= shift.end_time.strftime("%I:%M %p")%></td>
+          <% end %>
+          <% if @state == "incomplete" || (@state == "completed") %>
+            <td> 
+          <% end %>
+            <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
               &nbsp;Edit&nbsp;
             <% end %>
           </td>

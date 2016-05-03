@@ -1,4 +1,3 @@
-<%= render partial: "partials/index_structure", locals: {model_name: "shift", 
-                                                         primary: "upcoming_shifts", 
-                                                         secondary: "past_shifts",
-                                                         sidebar: nil} %>
+<% unless @shifts.empty? %>
+  <%= render partial: "shift_list", locals: {shifts: @shifts, state: @state} %>
+<% end %>

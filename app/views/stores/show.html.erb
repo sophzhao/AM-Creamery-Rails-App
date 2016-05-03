@@ -31,6 +31,6 @@
 </div>
 
 <!-- Add buttons to list all, edit project or destroy object -->
-<% if current_user!=nil && (current_user.role? :admin) %>
+<% if current_user!=nil && ((current_user.role? :admin) || (current_user.role? :manager)) %>
     <%= render partial: "partials/object_options", locals: {model_name: "store", object: @store} %>
 <% end %>
