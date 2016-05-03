@@ -7,14 +7,17 @@
 
         <!-- options for stores -->
         <li class="has-dropdown">
-          <%= link_to "Stores", stores_path %>
+          <%= link_to "Locations", stores_path %>
           <ul class="dropdown">
             <li><%= link_to "Store List", stores_path %></li>
-           <% if logged_in? %>
+          <% if logged_in? %>
+          <% if current_user!=nil && (current_user.role? :admin)%>
             <li><%= link_to "Add a Store", new_store_path %></li>
+          <% end %>
           </ul>
         </li>
 
+        <% if current_user!=nil && (current_user.role? :admin || :manager)%>
         <!-- options for employees -->
         <li class="has-dropdown">
           <%= link_to "Employees", employees_path %>
@@ -23,32 +26,45 @@
             <li><%= link_to "Add an Employee", new_employee_path %></li>
           </ul>
         </li>
+        <% end %>
 
         <!-- options for assignments -->
         <li class="has-dropdown">
           <%= link_to "Assignments", assignments_path %>
           <ul class="dropdown">
             <li><%= link_to "Assignments List", assignments_path %></li>
-            <li><%= link_to "Create New Assignment", new_assignment_path %></li>
+            <% if current_user!=nil && (current_user.role? :admin)%>
+              <li><%= link_to "Create New Assignment", new_assignment_path %></li>
+            <% end %>
           </ul>
         </li>
         <li class="has-dropdown">
           <%= link_to "Shifts", shifts_path %>
           <ul class="dropdown">
             <li><%= link_to "Shifts List", shifts_path %></li>
-            <li><%= link_to "Create New Shift", new_shift_path %></li>
+            <% if current_user!=nil && (current_user.role? :manager || :admin)%>
+              <li><%= link_to "Add a Shift", new_shift_path %></li>
+            <% end %>
+          </ul>
+        </li>
+        <li class="has-dropdown">
+          <%= link_to "Flavors", flavors_path %>
+          <ul class="dropdown">
+            <li><%= link_to "Flavors List", flavors_path %></li>
+            <% if current_user!=nil && (current_user.role? :admin)%>
+              <li><%= link_to "Add New Flavor", new_flavor_path %></li>
+            <% end %>
           </ul>
         </li>
       </ul>
         <ul class="right">
           <li class="has-dropdown">
-            <%= link_to "Settings", home_path %>
+            <%= link_to current_user.employee.proper_name, (home_path) %>
             <ul class="dropdown">
               <li><%= link_to "Logout", logout_path %></li>
             </ul>
           </li>
         <% end %>
-      <
     </section>
   </nav>
 </div>

@@ -34,6 +34,8 @@
       <% end %>
     </tbody>
   </table>
-  <%= will_paginate assignments, previous_label: "Previous&nbsp;", next_label: "&nbsp;Next" %>  
-<% end %>
+  <% if current_user.role? :manager || :admin %>
+    <%= will_paginate assignments, previous_label: "Previous&nbsp;", next_label: "&nbsp;Next" %>
+  <% end %>
 <p>&nbsp;</p>
+<% end %>

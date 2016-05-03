@@ -5,17 +5,21 @@
 </p>
 <!-- no sssn -->
 <p>
-  <img src="/app/assets/images/mail.png" alt="email"> <%= @current_user.email%>
+  <%=image_tag("mail.png")%> <%= @current_user.email%>
 </p>
 <p>
-  <b>Phone</b> <%= @current_user.employee.phone.nil? ? (number_to_phone @current_user.employee.phone) : "None entered" %>
-</p>
-
-<p>
-  <b>Role:</b> <%= @current_user.employee.role.capitalize %>
+  <%=image_tag("phone.png")%> <%= @current_user.employee.phone.nil? ? (number_to_phone @current_user.employee.phone) : "None entered" %>
 </p>
 
 <p>
+  <%=image_tag("user.png")%> <%= @current_user.employee.role.capitalize %>
+</p>
+
+<!-- <p>
   <b>Active:</b> <%= @current_user.employee.active ? "Yes" : "No" %>
-</p>
-
+</p> -->
+<% model_name = "employee", object = @current_user.employee %>
+<% opt = "#{object.respond_to?(:name) ? object.name : model_name.capitalize }" %>
+<%= link_to edit_employee_path(@current_user.employee, class: 'button radius') do %>
+    &nbsp;<%= "Edit #{@current_user.employee.proper_name}" %>
+<% end %>

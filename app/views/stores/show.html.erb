@@ -3,9 +3,13 @@
     <%= render partial: "store_details" %>
   </div>
   <div class="small-5 columns">
-    <%= render partial: "assigned_employees" unless @current_assignments.empty?%>
+    <% if current_user!=nil && (current_user.role? :admin) %>
+        <%= render partial: "assigned_employees" unless @current_assignments.empty?%>
+    <% end %>
   </div>
 </div>
 
 <!-- Add buttons to list all, edit project or destroy object -->
-<%= render partial: "partials/object_options", locals: {model_name: "store", object: @store}  %>
+<% if current_user!=nil && (current_user.role? :admin) %>
+    <%= render partial: "partials/object_options", locals: {model_name: "store", object: @store} %>
+<% end %>

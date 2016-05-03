@@ -2,8 +2,16 @@ class ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
   
   def index
-    @upcoming_shifts  = Shift.upcoming.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
-    @past_shifts = Shift.past.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
+    if current_user.role? :admin
+      @upcoming_shifts  = Shift.upcoming.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
+      @past_shifts = Shift.past.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
+    elsif current_user.role? :manager
+      @upcoming_shifts  = Shift.upcoming.for_store(current_user.employee.current_assignment.store_id).by_employee.chronological.paginate(page: params[:page]).per_page(15)
+      @past_shifts = Shift.past.for_store(current_user.employee.current_assignment.store_id).by_employee.chronological.paginate(page: params[:page]).per_page(15)
+    elsif current_user.role? :employee
+      @upcoming_shifts  = Shift.upcoming.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
+      @past_shifts = Shift.past.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
+    end
   end
 
   def show

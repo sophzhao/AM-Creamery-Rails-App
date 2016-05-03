@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
 
   # for use in authorizing with CanCan
   def role?(authorized_role)
+    return false if self.employee.nil?
     return false if self.employee.role.nil?
     self.employee.role.downcase.to_sym == authorized_role
   end

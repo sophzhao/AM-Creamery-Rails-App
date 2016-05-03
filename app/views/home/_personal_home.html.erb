@@ -1,20 +1,86 @@
-<h3>Welcome back <%@user%>!</h3>
+<h3>Welcome back, <%=current_user.employee.first_name%>!</h3>
 
 <p></p>
 
-<table border="0" cellspacing="5" cellpadding="5">
-    <tr valign="top">
-        <td>
-            <h3>Personal Information</h3>
-            <div id="user_employee_details">
-                <%= render :partial => 'users/user_details'%>
-            </div>
-        </td>
-        <td width="50">&nbsp;</td>
-        <td>
-            <h3>Upcoming Shifts</h3>
-            <div id="upcoming_shifts">
-                <%= render :partial => 'users/user_details'%>
-        </td>
-    </tr>
-</table>
+<% if current_user!=nil && (current_user.role? :manager) %>
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tr valign="top">
+            <td>
+                <h3>Personal Information</h3>
+                <div id="user_employee_details">
+                    <%= render :partial => 'users/user_details'%>
+                </div>
+            </td>
+            <td width="50">&nbsp;</td>
+            <td>
+                <h3>Upcoming Shifts</h3>
+                <div id="upcoming_shifts">
+                    <%= render :partial => 'users/user_details'%>
+            </td>
+        </tr>
+    </table>
+<% end %>
+
+<% if current_user!=nil && (current_user.role? :employee) %>
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tr valign="top">
+            <td>
+                <h3>Your Information</h3>
+                <div id="user_employee_details">
+                    <%= render :partial => 'users/user_details'%>
+                </div>
+            </td>
+            <td width="50">&nbsp;</td>
+            <td>
+                <h3>Upcoming Shifts</h3>
+                <div id="upcoming_shifts">
+                    <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Store</th>
+                        <th class="centered">Start Time</th>
+                        <th class="centered">End Time</th>
+                        <th>Notes</th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%  current_user.employee.current_assignment.shifts.upcoming.each do |shift| %>
+                        <tr>
+                          <td><%= link_to shift.assignment.store.name, store_path(shift.assignment.store) %></td>
+                          <td class="centered"><%= shift.start_time %></td>
+                          <td class="centered"><%= shift.end_time%></td>
+                          <td><%= shift.notes %></td>
+                          <td>
+                            <%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
+                              &nbsp;Edit&nbsp;
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+            </td>
+        </tr>
+    </table>
+<% end %>
+
+<% if current_user==nil %>
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tr valign="top">
+            <td>
+                <h3>Personal Information</h3>
+                <div id="user_employee_details">
+                    <%= render :partial => 'users/user_details'%>
+                </div>
+            </td>
+            <td width="50">&nbsp;</td>
+            <td>
+                <h3>Upcoming Shifts</h3>
+                <div id="upcoming_shifts">
+                    <%= render :partial => 'users/user_details'%>
+            </td>
+        </tr>
+    </table>
+<% end %>
+

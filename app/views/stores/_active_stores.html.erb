@@ -7,8 +7,10 @@
       <tr>
         <th width="225">Store Name</th>
         <th width="225">Store Phone</th>
-        <th width="125">Staff Count</th>
-        <th width="75">&nbsp;</th>
+        <% if current_user!=nil %>
+          <th width="125">Staff Count</th>
+          <th width="75">&nbsp;</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -16,12 +18,13 @@
         <tr>
           <td><%= link_to store.name, store_path(store) %></td>
           <td><%= number_to_phone store.phone %></td>
-          <td><%= store.assignments.current.count %></td>      
-          <td>
-            <%= link_to(edit_store_path(store), class: 'button tiny radius warning') do %>
+          <% if current_user!=nil %>
+            <td><%= store.assignments.current.count %></td>  
+            <td><%= link_to(edit_store_path(store), class: 'button tiny radius warning') do %>
               &nbsp;Edit&nbsp;
             <% end %>
-          </td>
+            </td>          
+          <% end %>
         </tr>
       <% end %>
     </tbody>

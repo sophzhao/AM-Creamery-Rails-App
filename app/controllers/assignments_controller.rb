@@ -6,8 +6,16 @@ class AssignmentsController < ApplicationController
   # before_action :set_assignment, only: [:show, :edit, :update, :destroy]
 
   def index
-    @current_assignments = Assignment.current.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
-    @past_assignments = Assignment.past.by_employee.by_store.paginate(page: params[:page]).per_page(15)  
+    if current_user.role? :manager
+      @current_assignments = Assignment.current.for_store(current_user.employee.current_assignment.store_id).by_employee.chronological.paginate(page: params[:page]).per_page(15)
+      @past_assignments = Assignment.past.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)  
+    elsif current_user.role? :admin
+      @current_assignments = Assignment.current.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
+      @past_assignments = Assignment.past.by_employee.by_store.paginate(page: params[:page]).per_page(15)  
+    elsif current_user.role? :employee
+      @current_assignments = Assignment.current.for_employee(current_user.employee_id)
+      @past_assignments = Assignment.past.for_employee(current_user.employee_id).chronological
+    end
   end
 
   # def show

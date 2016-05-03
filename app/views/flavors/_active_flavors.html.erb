@@ -1,0 +1,22 @@
+<% if @active_flavors.empty? %>
+  <p><em>There are no active flavors at this time.</em></p>
+<% else %>
+  <h3>Active Flavors</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @active_flavors.each do |flavor| %>
+        <tr>
+          <td><%= link_to flavor.name, flavor_path(flavor) %></td>
+          <!-- insert link to stores with this flavor -->
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<p>&nbsp;</p>
