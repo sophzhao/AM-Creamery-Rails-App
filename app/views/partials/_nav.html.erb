@@ -2,12 +2,11 @@
   <nav class="top-bar" data-topbar role="navigation"> 
     <section class="top-bar-section">
       <ul class="left">
+        <% if logged_in? %>
         <!-- link to home -->
         <li><%= link_to "Homepage", home_path %></li>
 
-        <!-- options for locations -->
-        <li><%= link_to "Locations", stores_path %></li>        
-        <% if logged_in? %>
+        <!-- options for locations -->        
           <% if current_user.role? :employee %>
               <li><%= link_to "Locations", stores_path %></li>
           <% else %>
@@ -20,6 +19,7 @@
               </ul>
             </li>
           <%end%>
+
 
         <!-- options for employees -->
           <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
@@ -84,6 +84,9 @@
                 <li><%= link_to "Logout", logout_path %></li>
               </ul>
             </li>
+        <% else %>
+          <li><%= link_to "Homepage", home_path %></li>
+          <li><%= link_to "Locations", stores_path %></li>          
         <% end %>
     </section>
   </nav>

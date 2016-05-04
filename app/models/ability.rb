@@ -36,22 +36,18 @@ class Ability
       end
 
       can :create, Shift do |this_shift|
-        my_store = user.employee.current_assignment.store_id 
-        # user.employee.current_assignment.store_id == this_shift.assignment.store_id && user.e == this_shift.assignment.employee_id
-        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
-        the_shifts.include? this_shift        
+        store = user.employee.current_assignment.store_id
+        this_shift.assignment.store_id == store       
       end
 
       can :update, Shift do |this_shift|
-        my_store = user.employee.current_assignment.store_id         
-        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
-        the_shifts.include? this_shift                
+        store = user.employee.current_assignment.store_id
+        this_shift.assignment.store_id == store               
       end
 
       can :destroy, Shift do |this_shift|
-        my_store = user.employee.current_assignment.store_id         
-        the_shifts = Assignment.current.map{|a| a.shifts if a.store_id == my_store}
-        the_shifts.include? this_shift 
+        store = user.employee.current_assignment.store_id
+        this_shift.assignment.store_id == store  
       end
 
       can :create, ShiftJob do |this_shift_job| 

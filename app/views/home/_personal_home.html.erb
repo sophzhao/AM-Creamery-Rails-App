@@ -3,6 +3,42 @@
 
 <p></p>
 
+<% if current_user!=nil && (current_user.role? :admin) %>
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tr valign="top">
+            <td>
+                <h3>Your Information</h3>
+                <div id="user_employee_details">
+                    <%= render :partial => 'users/user_details'%>
+                </div>
+            </td>
+            <td width="50">&nbsp;</td>
+            <td>
+                <div id="Adding">
+                <h3>Adding Things</h3>
+                <%= link_to(eval("new_store_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add a Store" %>
+                <%end%>
+                <%= link_to(eval("new_flavor_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add a Flavor" %>
+                <%end%>
+                <br>
+                <%= link_to(eval("new_employee_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add an Employee" %>
+                <%end%>
+                <br>
+                <%= link_to(eval("new_assignment_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add an Assignment" %>
+                <%end%>
+
+    
+                </div>
+            </td>
+        </tr>
+    </table>
+<% end %>
+
+
 <% if current_user!=nil && (current_user.role? :manager) %>
     <table border="0" cellspacing="5" cellpadding="5">
         <tr valign="top">
@@ -14,9 +50,8 @@
             </td>
             <td width="50">&nbsp;</td>
             <td>
-                <h3>Incomplete Shifts</h3>
                 <div id="incomplete_shifts">
-                    <%= render partial: "shifts/shift_list", locals: {shifts: Shift.incomplete.for_store(current_user.employee.current_assignment.store_id).by_employee, state: "incomplete"} %>
+                    <%= render partial: "shifts/shift_list", locals: {shifts: Shift.incomplete.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(10), state: @state = "incomplete"} %>
                 </div>
             </td>
         </tr>

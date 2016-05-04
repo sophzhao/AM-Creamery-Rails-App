@@ -11,7 +11,7 @@ class ShiftsController < ApplicationController
     elsif current_user.role? :manager
       @upcoming_shifts  = Shift.upcoming.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)
       @past_shifts = Shift.past.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)
-      @incomplete_shifts = Shift.incomplete.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)
+      @incomplete_shifts = Shift.past.incomplete.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)
       @completed_shifts = Shift.completed.for_store(current_user.employee.current_assignment.store_id).by_employee.paginate(page: params[:page]).per_page(15)
     elsif current_user.role? :employee
       @upcoming_shifts  = Shift.upcoming.for_employee(current_user.employee_id).paginate(page: params[:page]).per_page(15)
@@ -42,6 +42,7 @@ class ShiftsController < ApplicationController
   end
 
   def edit
+
   end
 
   def create
@@ -54,8 +55,9 @@ class ShiftsController < ApplicationController
   end
 
   def update
+    authorize! :update, @shift
     if @shift.update(shift_params)
-      redirect_to shift_params, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} is updated."
+      redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} is updated."
     else
       render action: 'edit'
     end

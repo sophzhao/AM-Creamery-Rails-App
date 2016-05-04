@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    flash[:error] = "Go away or I shall taunt you a second time."
+    flash[:error] = "You do not have permission to do that! Sorry, it's my bad for not resolving the gulf of evalution."
     redirect_to home_path
   end
 end

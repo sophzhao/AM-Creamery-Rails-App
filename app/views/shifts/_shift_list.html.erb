@@ -39,8 +39,14 @@
             </td>          
           <% end %>
           <% unless current_user.role? :employee %>
-            <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
-              &nbsp;Edit&nbsp;
+            <% if @state == "incomplete"%>
+              <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
+              &nbsp;Add Jobs&nbsp;
+              <% end %>
+            <% else %>
+              <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
+                &nbsp;Edit&nbsp;
+            <% end %>
             <% end %>
           <% end %>
           </td>
@@ -48,6 +54,6 @@
       <% end %>
     </tbody>
   </table>
-
+  <%= will_paginate shifts, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
 <% end %>
 <p>&nbsp;</p>
