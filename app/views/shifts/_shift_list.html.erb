@@ -1,37 +1,41 @@
 <% if shifts.empty? %>
   <p><em>There are no <%= state%> shifts at this time.</em></p>
 <% else %>
-  <h3><%= state.capitalize %> Shifts for <%= link_to current_user.employee.current_assignment.store.name, store_path(current_user.employee.current_assignment.store) %> Store </h3>
+  <h3><%= state.capitalize %> Shifts for <%= link_to current_user.employee.current_assignment.store.name, store_path(current_user.employee.current_assignment.store)%> Store </h3>
   <table class="table table-striped">
     <thead>
       <tr>
         <th>Employee</th>
         <th class="centered">Date</th>        
         <th class="centered">Start Time</th>
-        <% unless @state == "upcoming") %>        
+        <% unless @state == "upcoming" %>        
           <th class="centered">End Time</th>
         <% end %>
-        <% if @state == ("incomplete" || "completed") %>
-          <th class="centered">End Time</th>          
+        <% if (@state == "incomplete") || (@state == "completed") %>
+          <th class="centered">Jobs</th>          
         <% end %>
-        <th>&nbsp;</th>
+        <% unless current_user.role? :employee %>
+          <th>&nbsp;</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
       <% shifts.each do |shift| %>
         <tr>
           <td><%= link_to shift.assignment.employee.name, employee_path(shift.assignment.employee) %></td>
-          <td class="centered"><%= shift.start_time.strftime("%b %d") %></td>
-          <td class="centered"><%= shift.start_time.strftime("%I:%M %p") %></td>
-          <% unless @state == "upcoming") %>        
-            <td class="centered"><%= shift.end_time.strftime("%I:%M %p")%></td>
+          <td class="centered"><%= shift.date.strftime("%b %d") %></td>
+          <td class="centered"><%= shift.start_time.localtime.strftime("%I:%M %p") %></td>
+          <% unless @state == "upcoming" %>        
+            <td class="centered"><%= shift.end_time.localtime.strftime("%I:%M %p")%></td>
           <% end %>
           <% if @state == "incomplete" || (@state == "completed") %>
-            <td> 
+            <td></td>          
           <% end %>
+          <% unless current_user.role? :employee %>
             <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
               &nbsp;Edit&nbsp;
             <% end %>
+          <% end %>
           </td>
         </tr>
       <% end %>

@@ -35,8 +35,6 @@ class Employee < ActiveRecord::Base
   scope :alphabetical,    -> { order('last_name, first_name') }
   scope :for_store,       ->(store_id) { joins(:assignments).where(assignments: {store_id: store_id, end_date: nil})}
 
-
-
   # Other methods
   def name
     "#{last_name}, #{first_name}"

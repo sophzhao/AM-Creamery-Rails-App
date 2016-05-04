@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="small-7 columns">
+  <div class="small-6 columns">
     <%= render partial: "store_details" %>
     <% if current_user!=nil && (current_user.role? :admin) %>
         <%= render partial: "assigned_employees" unless @current_assignments.empty?%>
     <% end %>
   </div>
-  <div class="small-5 columns">
+  <div class="small-6 columns">
     <table class="table table-striped">
     <thead>
       <tr>

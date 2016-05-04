@@ -1,5 +1,5 @@
 class ShiftsController < ApplicationController
-  before_action :set_shift, only: [:show, :edit, :update, :destroy]
+  before_action :set_shift, only: [:show, :edit, :update, :destroy, :start_shift, :end_shift]
   
   def index
     if current_user.role? :admin
@@ -15,8 +15,6 @@ class ShiftsController < ApplicationController
     elsif current_user.role? :employee
       @upcoming_shifts  = Shift.upcoming.for_employee(current_user.employee_id).paginate(page: params[:page]).per_page(15)
       @past_shifts = Shift.past.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
-      @incomplete_shifts = Shift.incomplete.for_employee(current_user.employee_id).paginate(page: params[:page]).per_page(15)
-      @completed_shifts = Shift.completed.for_employee(current_user.employee_id).paginate(page: params[:page]).per_page(15)
     end
     if params[:shift_type] == "upcoming"
       @shifts = @upcoming_shifts 
@@ -60,6 +58,18 @@ class ShiftsController < ApplicationController
     end
   end
 
+  def start_shift  
+    @shift.start_now
+    @shift.save
+    redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} is started."
+  end
+
+  def end_shift 
+    @shift.end_now
+    @shift.save
+    redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} has ended."    
+  end
+
   def destroy
     @shift.destroy
     redirect_to shifts_path, notice: "Successfully removed #{@shift.assignment.employee.proper_name}'s shift from #{@shift.assignment.store.name}."
@@ -67,11 +77,11 @@ class ShiftsController < ApplicationController
 
   private
   def set_shift
-    @shift = shift.find(params[:id])
+    @shift = Shift.find(params[:id])
   end
 
   def shift_params
-    params.require(:shift).permit(:first_name, :last_name, :ssn, :date_of_birth, :role, :phone, :active)
+    params.require(:shift).permit(:assignment_id, :date, :start_time, :end_time, :notes)
   end
 
 end

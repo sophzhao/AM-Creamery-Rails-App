@@ -18,8 +18,7 @@
 <!-- <p>
   <b>Active:</b> <%= @current_user.employee.active ? "Yes" : "No" %>
 </p> -->
-<% model_name = "employee", object = @current_user.employee %>
-<% opt = "#{object.respond_to?(:name) ? object.name : model_name.capitalize }" %>
-<%= link_to edit_employee_path(@current_user.employee, class: 'button radius') do %>
-    &nbsp;<%= "Edit #{@current_user.employee.proper_name}" %>
+<%= link_to(eval("edit_employee_path(@current_user.employee)"), method: 'edit', class: 'button radius') do %>
+    &nbsp;<%= "Edit #{@current_user.employee.name}" %>
 <% end %>
+
