@@ -19,7 +19,10 @@
 //= require pickadate/picker.time 
 //= require_tree .
 
-$(".datepicker").pickadate();
+$('.datepicker').pickadate({
+  selectYears: true,
+  selectMonths: true
+})
 $(".timepicker").pickatime();
 
 $(function() {

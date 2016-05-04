@@ -1,6 +1,6 @@
 class ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy, :start_shift, :end_shift]
-  
+  authorize_resource
 
   def index
     if current_user.role? :admin
@@ -16,6 +16,8 @@ class ShiftsController < ApplicationController
     elsif current_user.role? :employee
       @upcoming_shifts  = Shift.upcoming.for_employee(current_user.employee_id).paginate(page: params[:page]).per_page(15)
       @past_shifts = Shift.past.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
+      @incomplete_shifts = Shift.incomplete.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
+      @completed_shifts = Shift.completed.for_employee(current_user.employee_id).chronological.paginate(page: params[:page]).per_page(15)
     end
     if params[:shift_type] == "upcoming"
       @shifts = @upcoming_shifts 
@@ -59,13 +61,18 @@ class ShiftsController < ApplicationController
     end
   end
 
-  def start_shift  
+  def start_shift
+    authorize! :update, @shift  
     @shift.start_now
     @shift.save
-    redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} is started."
+    # redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} is started."
+    respond_to do |format|
+      format.js {}
+    end
   end
 
   def end_shift 
+    authorize! :update, @shift  
     @shift.end_now
     @shift.save
     redirect_to home_path, notice: "#{@shift.assignment.employee.proper_name}'s shift at #{@shift.assignment.store.name} has ended."    

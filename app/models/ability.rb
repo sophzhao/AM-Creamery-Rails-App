@@ -8,7 +8,6 @@ class Ability
     if user.role? :admin
       can :manage, :all
 
-
     elsif user.role? :manager
       can :read, Store
 
@@ -76,6 +75,8 @@ class Ability
       can :read, Job, :active => true
       can :read, Store, :active => true
       can :read, Flavor, :active => true
+      can :start_shift, Shift
+      can :end_shift, Shift
 
       can :read, Employee do |this_employee|
         this_employee.id == user.employee_id
@@ -102,6 +103,10 @@ class Ability
 
       can :update, Employee do |this_employee|
         this_employee.id == user.id
+      end
+
+      can :update, Shift do |s|
+        s.employee.id == user.employee.id
       end
 
       can :update, User do |u|

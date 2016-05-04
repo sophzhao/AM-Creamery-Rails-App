@@ -1,3 +1,4 @@
+<div id="personal_homepage">
 <h3>Welcome back, <%=current_user.employee.first_name%>!</h3>
 
 <p></p>
@@ -15,7 +16,8 @@
             <td>
                 <h3>Incomplete Shifts</h3>
                 <div id="incomplete_shifts">
-                    <%= render :partial => 'users/user_details'%>
+                    <%= render partial: "shifts/shift_list", locals: {shifts: Shift.incomplete.for_store(current_user.employee.current_assignment.store_id).by_employee, state: "incomplete"} %>
+                </div>
             </td>
         </tr>
     </table>
@@ -53,12 +55,12 @@
                           <td class="centered"><%= shift.start_time.localtime.strftime("%I:%M %p") %></td>
                           <td class="centered"><%= shift.end_time.localtime.strftime("%I:%M %p")%></td>
                           <td>
-                            <%= link_to(start_shift_path(id: shift.id), class: 'button tiny radius warning') do %>
+                            <%= link_to(start_shift_path(id: shift.id), method: :post, remote: true, class: 'button tiny radius warning') do %>
                               &nbsp;Start Shift&nbsp;
                             <% end %>
                           </td>
                           <td> 
-                            <%= link_to(end_shift_path(id: shift.id), class: 'button tiny radius warning') do %>
+                            <%= link_to(end_shift_path(id: shift.id), method: :post, remote: true, class: 'button tiny radius warning') do %>
                               &nbsp;End Shift&nbsp;
                             <% end %>
                           </td>
@@ -90,4 +92,5 @@
         </tr>
     </table>
 <% end %>
+</div>
 

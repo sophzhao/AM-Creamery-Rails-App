@@ -9,7 +9,9 @@
     <%= f.input :date, as: :string, input_html: {class: "datepicker"} %>
     <%= f.input :start_time, as: :string, input_html: {class: "timepicker"}%>
     <%= f.input :notes, input_html: {class: "avg"} %>
-    <%= render partial: 'jobs_checkboxes' %>
+    <% if controller.action_name == "edit" %>
+      <%= render partial: 'jobs_checkboxes' %>
+    <% end %>
     <div class="form-actions">
       <%= f.submit nil, :class => 'button radius' %>
       <%= link_to 'Cancel', shifts_path, :class => 'button alert radius' %>

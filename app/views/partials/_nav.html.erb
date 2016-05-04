@@ -3,70 +3,87 @@
     <section class="top-bar-section">
       <ul class="left">
         <!-- link to home -->
-        <li><%= link_to "Home", home_path %></li>
+        <li><%= link_to "Homepage", home_path %></li>
 
-        <!-- options for stores -->
-        <li class="has-dropdown">
-          <%= link_to "Locations", stores_path %>
-          <ul class="dropdown">
-            <li><%= link_to "Store List", stores_path %></li>
-          <% if logged_in? %>
-          <% if current_user!=nil && (current_user.role? :admin)%>
-            <li><%= link_to "Add a Store", new_store_path %></li>
-          <% end %>
-          </ul>
-        </li>
+        <!-- options for locations -->
+        <li><%= link_to "Locations", stores_path %></li>        
+        <% if logged_in? %>
+          <% if current_user.role? :employee %>
+              <li><%= link_to "Locations", stores_path %></li>
+          <% else %>
+            <li class="has-dropdown">
+              <%= link_to "Locations", stores_path %>
+              <ul class="dropdown">
+              <% if current_user!=nil && (current_user.role? :admin)%>
+                <li><%= link_to "Add a Store", new_store_path %></li>
+              <% end %>
+              </ul>
+            </li>
+          <%end%>
 
-        <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
         <!-- options for employees -->
-        <li class="has-dropdown">
-          <%= link_to "Employees", employees_path %>
-          <ul class="dropdown">
-            <li><%= link_to "Employee List", employees_path %></li>
-            <li><%= link_to "Add an Employee", new_employee_path %></li>
-          </ul>
-        </li>
-        <% end %>
+          <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
+          <!-- options for employees -->
+            <li class="has-dropdown">
+              <%= link_to "Employees", employees_path %>
+              <ul class="dropdown">
+                <li><%= link_to "Employee List", employees_path %></li>
+                <li><%= link_to "Add an Employee", new_employee_path %></li>
+              </ul>
+            </li>
+          <% end %>
 
-        <!-- options for assignments -->
-        <li class="has-dropdown">
-          <%= link_to "Assignments", assignments_path %>
-          <ul class="dropdown">
-            <li><%= link_to "Assignments List", assignments_path %></li>
-            <% if current_user!=nil && (current_user.role? :admin)%>
-              <li><%= link_to "Create New Assignment", new_assignment_path %></li>
-            <% end %>
-          </ul>
-        </li>
-        <li class="has-dropdown">
-          <%= link_to "Shifts", shifts_path(shift_type: "upcoming") %>
-          <ul class="dropdown">
-            <li><%= link_to "Upcoming Shifts", shifts_path(shift_type: "upcoming") %></li>
-            <li><%= link_to "Past Shifts", shifts_path(shift_type: "past") %></li>
-            <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
+          <!-- options for assignments -->
+          <% if current_user.role? :employee %>
+              <li><%= link_to "Assignment", assignments_path %></li>
+          <% else %>
+            <li class="has-dropdown">
+              <%= link_to "Assignments", assignments_path %>
+              <ul class="dropdown">
+                <li><%= link_to "All Assignments", assignments_path %></li>
+                <% if current_user!=nil && (current_user.role? :admin)%>
+                  <li><%= link_to "Create New Assignment", new_assignment_path %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+
+          <!-- options for shifts -->
+          <li class="has-dropdown">
+            <%= link_to "Shifts", shifts_path(shift_type: "upcoming") %>
+            <ul class="dropdown">
+              <li><%= link_to "Upcoming Shifts", shifts_path(shift_type: "upcoming") %></li>
+              <li><%= link_to "Past Shifts", shifts_path(shift_type: "past") %></li>
               <li><%= link_to "Incomplete Shifts", shifts_path(shift_type: "incomplete") %></li>
               <li><%= link_to "Complete Shifts", shifts_path(shift_type: "complete") %></li>
-              <li><%= link_to "Add a Shift", new_shift_path %></li>
-            <% end %>
-          </ul>
-        </li>
-        <li class="has-dropdown">
-          <%= link_to "Flavors", flavors_path %>
-          <ul class="dropdown">
-            <li><%= link_to "Flavors List", flavors_path %></li>
-            <% if current_user!=nil && (current_user.role? :admin)%>
-              <li><%= link_to "Add New Flavor", new_flavor_path %></li>
-            <% end %>
-          </ul>
-        </li>
-      </ul>
-        <ul class="right">
-          <li class="has-dropdown">
-            <%= link_to current_user.employee.proper_name, (home_path) %>
-            <ul class="dropdown">
-              <li><%= link_to "Logout", logout_path %></li>
+              <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
+                <li><%= link_to "Add a Shift", new_shift_path %></li>
+              <% end %>
             </ul>
           </li>
+
+          <!-- options for flavors -->
+          <% if current_user.role? :admin %>
+            <li class="has-dropdown">
+              <%= link_to "Flavors", flavors_path %>
+              <ul class="dropdown">
+                <li><%= link_to "All Flavors", flavors_path %></li>
+                <% if current_user!=nil && (current_user.role? :admin)%>
+                  <li><%= link_to "Add New Flavor", new_flavor_path %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+
+
+        </ul>
+          <ul class="right">
+            <li class="has-dropdown">
+              <%= link_to current_user.employee.proper_name, (home_path) %>
+              <ul class="dropdown">
+                <li><%= link_to "Logout", logout_path %></li>
+              </ul>
+            </li>
         <% end %>
     </section>
   </nav>

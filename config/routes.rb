@@ -21,8 +21,8 @@ Rails.application.routes.draw do
   get 'contact' => 'home#contact', as: :contact
   get 'privacy' => 'home#privacy', as: :privacy
   
-  get "start_shift" => 'shifts#start_shift', :as => :start_shift
-  get "end_shift" => 'shifts#end_shift', :as => :end_shift
+  post "start_shift" => 'shifts#start_shift', :as => :start_shift
+  post "end_shift" => 'shifts#end_shift', :as => :end_shift
 
   # Set the root url
   root :to => 'home#home'  

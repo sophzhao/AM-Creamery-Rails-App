@@ -29,7 +29,14 @@
             <td class="centered"><%= shift.end_time.localtime.strftime("%I:%M %p")%></td>
           <% end %>
           <% if @state == "incomplete" || (@state == "completed") %>
-            <td></td>          
+            <td><% if @state == "completed" %>
+                  <% shift.jobs.each do |job|%>
+                    <%= job.name%>
+                  <%end%>
+                <% elsif @state == "incomplete" %>
+                  <%= "none" %>
+                <% end %>  
+            </td>          
           <% end %>
           <% unless current_user.role? :employee %>
             <td><%= link_to(edit_shift_path(shift), class: 'button tiny radius warning') do %>
@@ -41,6 +48,6 @@
       <% end %>
     </tbody>
   </table>
-  <%= will_paginate shifts, previous_label: "Previous&nbsp;", next_label: "&nbsp;Next" %>  
+
 <% end %>
 <p>&nbsp;</p>
