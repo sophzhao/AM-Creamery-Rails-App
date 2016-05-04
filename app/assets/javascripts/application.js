@@ -14,7 +14,13 @@
 //= require jquery_ujs
 //= require jquery_nested_form
 //= require foundation.min
+//= require pickadate/picker 
+//= require pickadate/picker.date 
+//= require pickadate/picker.time 
 //= require_tree .
+
+$(".datepicker").pickadate();
+$(".timepicker").pickatime();
 
 $(function() {
   $(document).foundation('topbar', 'reflow');

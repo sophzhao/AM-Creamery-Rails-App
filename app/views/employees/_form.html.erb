@@ -8,10 +8,10 @@
           <%= f.input :ssn, input_html: {class: "avg"} %>
           <%= f.input :date_of_birth, as: :date, start_year: Date.today.year - 13,
                                     end_year: Date.today.year - 90,
-                                    order: [:month, :day, :year], include_blank: true, input_html: {class: "avg"} %>
+                                    order: [:month, :day, :year], include_blank: true, as: :string, input_html: {class: "datepicker"} %>
 
           <%= f.input :phone, input_html: {class: "avg"} %>
-          <%= f.input :role, collection: Employee::ROLES_LIST, include_blank: true, input_html: {class: "avg"} %>
+          <%= f.input :role, collection: Employee::ROLES_LIST, include_blank: true, as: :radio_buttons, input_html: {class: "avg"} %>
           <%= f.input :active %>
           <!-- render :partial => "employee_details", :locals => { :f => employee_form } -->
       </div>

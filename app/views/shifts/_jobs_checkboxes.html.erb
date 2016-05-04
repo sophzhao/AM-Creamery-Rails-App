@@ -1,0 +1,7 @@
+<p>
+  <% for job in Job.alphabetical %>
+    <%= check_box_tag "shift[job_ids][]", job.id, @shift.jobs.include?(job) %>
+    <%= job.name %>
+    <br />
+  <% end  %>
+</p>

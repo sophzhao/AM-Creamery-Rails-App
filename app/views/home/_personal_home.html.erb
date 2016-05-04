@@ -13,8 +13,8 @@
             </td>
             <td width="50">&nbsp;</td>
             <td>
-                <h3>Upcoming Shifts</h3>
-                <div id="upcoming_shifts">
+                <h3>Incomplete Shifts</h3>
+                <div id="incomplete_shifts">
                     <%= render :partial => 'users/user_details'%>
             </td>
         </tr>
@@ -54,12 +54,12 @@
                           <td class="centered"><%= shift.end_time.localtime.strftime("%I:%M %p")%></td>
                           <td>
                             <%= link_to(start_shift_path(id: shift.id), class: 'button tiny radius warning') do %>
-                              &nbsp;Start&nbsp;
+                              &nbsp;Start Shift&nbsp;
                             <% end %>
                           </td>
                           <td> 
                             <%= link_to(end_shift_path(id: shift.id), class: 'button tiny radius warning') do %>
-                              &nbsp;Stop&nbsp;
+                              &nbsp;End Shift&nbsp;
                             <% end %>
                           </td>
                         </tr>

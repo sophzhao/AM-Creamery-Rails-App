@@ -16,6 +16,9 @@
  *= require font-awesome.min
  *= require foundation_and_overrides
  *= require simple_form
+ *= require pickadate/default
+ *= require pickadate/default.date
+ *= require pickadate/default.time
  */
 
  .tl_name {
@@ -112,4 +115,8 @@ li.well {
 
 label {
   padding-right: 4px;
+}
+
+.simple_form label {
+  width: 55px !important;
 }

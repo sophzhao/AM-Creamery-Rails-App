@@ -1,6 +1,7 @@
 class ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy, :start_shift, :end_shift]
   
+
   def index
     if current_user.role? :admin
       @upcoming_shifts  = Shift.upcoming.by_store.by_employee.paginate(page: params[:page]).per_page(15)
@@ -81,7 +82,7 @@ class ShiftsController < ApplicationController
   end
 
   def shift_params
-    params.require(:shift).permit(:assignment_id, :date, :start_time, :end_time, :notes)
+    params.require(:shift).permit(:assignment_id, :date, :start_time, :end_time, :notes, :job_ids => [])
   end
 
 end

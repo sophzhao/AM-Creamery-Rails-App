@@ -1,0 +1,10 @@
+<h3><%=@shift.employee.name%>'s Shift at <%=@shift.store.name%> Details</h3>
+
+<p>
+  <b>Date:</b><br>
+  <%= @shift.date.localtime.strftime("%B, %d") %><br />
+</p>
+<p>
+  <b>Start Time:</b><br>
+  <%= @shift.start_time.localtime.strftime("%I:%m %p") %><br />
+</p>

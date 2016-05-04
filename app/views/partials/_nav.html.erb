@@ -43,7 +43,7 @@
           <ul class="dropdown">
             <li><%= link_to "Upcoming Shifts", shifts_path(shift_type: "upcoming") %></li>
             <li><%= link_to "Past Shifts", shifts_path(shift_type: "past") %></li>
-            <% if current_user!=nil && (current_user.role? :manager || :admin)%>
+            <% if current_user!=nil && ((current_user.role? :manager) || (current_user.role? :admin))%>
               <li><%= link_to "Incomplete Shifts", shifts_path(shift_type: "incomplete") %></li>
               <li><%= link_to "Complete Shifts", shifts_path(shift_type: "complete") %></li>
               <li><%= link_to "Add a Shift", new_shift_path %></li>
