@@ -1,0 +1,9 @@
+<h3>Job Details</h3>
+<p>
+  <h4>
+    Name: <%= @job.name %>
+  </h4>
+</p>
+<p>
+  <b>Description:</b> <%= @job.description.empty? ? "No description added." : @job.description %>
+</p>

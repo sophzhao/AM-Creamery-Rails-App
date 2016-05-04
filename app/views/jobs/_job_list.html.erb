@@ -1,0 +1,21 @@
+<% if @jobs.empty? %>
+  <p><em>There are no active jobs at this time.</em></p>
+<% else %>
+  <h3>Current Jobs</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th width="225">Job Name</th>
+        <th width="225">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @jobs.each do |job| %>
+        <tr>
+          <td><%= link_to job.name, job_path(job) %></td>
+          <td><%= job.description %></td>         
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

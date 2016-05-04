@@ -8,7 +8,7 @@
   <%=image_tag("mail.png")%> <%= @current_user.email%>
 </p>
 <p>
-  <%=image_tag("phone.png")%> <%= @current_user.employee.phone.nil? ? (number_to_phone @current_user.employee.phone) : "None entered" %>
+  <%=image_tag("phone.png")%> <%= @current_user.employee.phone.nil? ? "None entered" : (number_to_phone @current_user.employee.phone) %>
 </p>
 
 <p>

@@ -15,7 +15,7 @@
             <td width="50">&nbsp;</td>
             <td>
                 <div id="Adding">
-                <h3>Adding Things</h3>
+                <h3>Adding Essentials</h3>
                 <%= link_to(eval("new_store_path"), method: 'get', class: 'button radius') do %>
     &nbsp;<%= "Add a Store" %>
                 <%end%>
@@ -26,9 +26,15 @@
                 <%= link_to(eval("new_employee_path"), method: 'get', class: 'button radius') do %>
     &nbsp;<%= "Add an Employee" %>
                 <%end%>
+                <%= link_to(eval("new_shift_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add a Shift" %>
+                <%end%>
                 <br>
                 <%= link_to(eval("new_assignment_path"), method: 'get', class: 'button radius') do %>
-    &nbsp;<%= "Add an Assignment" %>
+    &nbsp;<%= "Create an Assignment" %>
+                <%end%>
+                <%= link_to(eval("new_job_path"), method: 'get', class: 'button radius') do %>
+    &nbsp;<%= "Add a Job" %>
                 <%end%>
 
     
